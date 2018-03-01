@@ -139,7 +139,7 @@ public class Main {
         for (Product product : cart){
             System.out.println("Item: " + product.getName() + "\n" + "Price: " + product.getPrice() + "\n" + "------------");
             total += product.getPrice();
-            System.out.println("YOUR TOTAL IS: " + total);
         }
+        System.out.println("YOUR TOTAL IS: " + total);
     }
 }
