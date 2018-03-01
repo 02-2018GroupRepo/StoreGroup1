@@ -1,7 +1,6 @@
 package com.company;
 
 import java.util.Scanner;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Main {
@@ -12,6 +11,12 @@ public class Main {
         ArrayList<Product> vendor1 = new ArrayList<Product>();
         ArrayList<Product> vendor2 = new ArrayList<Product>();
         ArrayList<Product> vendor3 = new ArrayList<Product>();
+
+        // Create a array list that contains the vendors
+        ArrayList<ArrayList<Product>> vendorList = new ArrayList<ArrayList<Product>>();
+        vendorList.add(vendor1);
+        vendorList.add(vendor2);
+        vendorList.add(vendor3);
 
         Product soap = new Product("Soap", "One bar of soap", 1.50d,2);
         Product broom = new Product("Broom", "One bristle broom", 9.50d);
@@ -64,50 +69,45 @@ public class Main {
                             "3 to remove product from your cart" + "\n" +
                             "4 to checkout" + "\n");
 
-            int userInput = keyboard.nextInt();
 
-            switch (userInput) {
-                case 1:
-                    viewCart(cart);
-                    break;
-                case 2:
-                    String secondInput = keyboard.next();
-                    for(Product product: vendor1){
-//                    System.out.println("----" + product);
-                        if(secondInput.equalsIgnoreCase(product.getName())){
-                            addToCart(product, cart);
-                            product.decrementStock();
+            if(keyboard.hasNextInt()) {     // Check if user Inputs an Int to prevent error
+                int userInput = keyboard.nextInt();
+                switch (userInput) {
+                    case 1:
+                        viewCart(cart);
+                        break;
+                    case 2:
+                        String secondInput = keyboard.next();
+
+                        // loop through all the vendor products and check if user input match
+                        for (ArrayList<Product> vendor : vendorList) {
+                            for (Product product : vendor) {
+                                if (secondInput.equalsIgnoreCase(product.getName())) {
+                                    addToCart(product, cart);
+                                    product.decrementStock();
+                                }
+                            }
                         }
-                    }
-                    for(Product product: vendor2){
-//                    System.out.println("----" + product);
-                        if(secondInput.equalsIgnoreCase(product.getName())){
-                            addToCart(product, cart);
-                            product.decrementStock();
-                        }
-                    }
-                    for(Product product: vendor3){
-//                    System.out.println("----" + product);
-                        if(secondInput.equalsIgnoreCase(product.getName())){
-                            addToCart(product, cart);
-                            product.decrementStock();
-                        }
-                    }
-                    break;
-                case 3:
-                    String thirdInput = keyboard.next();
-                    removeFromCart(thirdInput, cart);
-                    break;
-                case 4:
-                    keyboard.close();
-                    checkout(cart);
-                    imStillHere = false;
-                    break;
-                default:
-                    System.out.println("Invalid input");
-                    break;
+
+                        break;
+                    case 3:
+                        String thirdInput = keyboard.next();
+                        removeFromCart(thirdInput, cart);
+                        break;
+                    case 4:
+                        keyboard.close();
+                        checkout(cart);
+                        imStillHere = false;
+                        break;
+                    default:
+                        System.out.println("Invalid input");
+                        break;
+                }
+            } else {
+                System.out.println("Invalid input");
+                System.out.println();
+                keyboard.next(); // Clear invalid input from Scanner (Infinite loop without it when using hasNextInt)
             }
-
         }
     }
 
