@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -18,15 +19,15 @@ public class Main {
         vendorList.add(vendor2);
         vendorList.add(vendor3);
 
-        Product soap = new Product("Soap", "One bar of soap", 1.50d,2);
+        Product soap = new Product("Soap", "One bar of soap", 1.50d, 2);
         Product broom = new Product("Broom", "One bristle broom", 9.50d);
-        Product bucket = new Product("Bucket", "One metal bucket", 12d,7);
+        Product bucket = new Product("Bucket", "One metal bucket", 12d, 7);
         Product cup = new Product("Cup", "10 pack of cups", 4d);
         Product phone = new Product("Phone", "one landline phone", 40d);
         Product[] productList1 = {soap, broom, bucket, phone, cup};
 
         for (Product product : productList1) {
-            if(product.getQty() > 0) {
+            if (product.getQty() > 0) {
                 vendor1.add(product);
                 System.out.println(product.toString());
             }
@@ -39,7 +40,7 @@ public class Main {
         Product chair = new Product("Chair", "one folding chair", 19.99d);
         Product[] productList2 = {marker, pen, pencil, table, chair};
         for (Product product : productList2) {
-            if(product.getQty() > 0) {
+            if (product.getQty() > 0) {
                 vendor2.add(product);
                 System.out.println(product.toString());
             }
@@ -51,7 +52,7 @@ public class Main {
         Product hat = new Product("Hat", "90s revival bucket hat", 6.45d);
         Product[] productList3 = {shirt, pants, belt, shoes, hat};
         for (Product product : productList3) {
-            if(product.getQty() > 0){
+            if (product.getQty() > 0) {
                 vendor3.add(product);
                 System.out.println(product.toString());
             }
@@ -65,12 +66,12 @@ public class Main {
         while (imStillHere) {
             System.out.print("Cart options:" + "\n" +
                     "1 to view contents of the cart" + "\n" +
-                            "2 to add product to your cart" + "\n" +
-                            "3 to remove product from your cart" + "\n" +
-                            "4 to checkout" + "\n");
+                    "2 to add product to your cart" + "\n" +
+                    "3 to remove product from your cart" + "\n" +
+                    "4 to checkout" + "\n");
 
-
-            if(keyboard.hasNextInt()) {     // Check if user Inputs an Int to prevent error
+            // try to run a block a code that an exception may occur due to a user invalid input
+            try {
                 int userInput = keyboard.nextInt();
                 switch (userInput) {
                     case 1:
@@ -103,28 +104,31 @@ public class Main {
                         System.out.println("Invalid input");
                         break;
                 }
-            } else {
-                System.out.println("Invalid input");
+            }
+            // Block of code is triggered when User input was invalid and set off an InputMismatch Exception
+            catch (InputMismatchException e) {
+                System.out.println("Invalid Input\nPlease select from the provided options");
                 System.out.println();
-                keyboard.next(); // Clear invalid input from Scanner (Infinite loop without it when using hasNextInt)
+                keyboard.next(); // steps over the invalid input in the Scanner stream
+                                 // and prevents the program from going into an infinite loop
             }
         }
     }
 
-    public static void addToCart(Product product, ArrayList<Product> cart){
+    public static void addToCart(Product product, ArrayList<Product> cart) {
         cart.add(product);
     }
 
     public static void viewCart(ArrayList<Product> cart) {
         // Check whats in the final cart
         System.out.println("\n" + "****ITEMS IN CART****" + "\n");
-        for (Product product : cart){
+        for (Product product : cart) {
             System.out.println("Item: " + product.getName() + "\n" + "Price: " + product.getPrice() + "\n" + "------------");
         }
     }
 
     public static void removeFromCart(String thirdInput, ArrayList<Product> cart) {
-        for (Product product: cart) {
+        for (Product product : cart) {
             if (thirdInput.equalsIgnoreCase(product.getName())) {
                 cart.remove(product);
                 break;
@@ -136,7 +140,7 @@ public class Main {
         // Check whats in the final cart
         System.out.println("\n" + "****ITEMS IN CART****" + "\n");
         double total = 0;
-        for (Product product : cart){
+        for (Product product : cart) {
             System.out.println("Item: " + product.getName() + "\n" + "Price: " + product.getPrice() + "\n" + "------------");
             total += product.getPrice();
         }
